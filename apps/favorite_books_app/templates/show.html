@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Show</title>
+
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css.css' %}">
+    </head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <h4 class="white mr-auto">
+            <a href="/books" class="white mr-auto">Welcome, {{user_info.first_name}}</h4></a>
+        </h4>
+        <a href="/logout" class="badge badge-pill badge-primary">Log out</a>
+    </nav>
+    <br>
+    <div class="row container">
+        <div class="marginleft col form-group">
+            <h1 class="container-fluid border text-dark">{{book_info.title}}</h1>
+            <h6>Added by: <span class="text-muted">{{book_info.uploaded_by.first_name}} {{book_info.uploaded_by.last_name}}</span></h6>
+            <h6>Added on: <span class="text-muted">{{book_info.created_at}}</span></h6>
+            <h6>Last updated on: <span class="text-muted">{{book_info.updated_at}}</span></h6>
+            {% if messages %}
+                {% for message in messages %}
+                    {{ message | safe }}
+                {% endfor %}
+            {% endif %}
+            {% if book_info.uploaded_by.email == request.session.username %}
+                <form action="/books/{{book_info.id}}/edit">
+                    <div class="row form-group">
+                        <label class="margintop col-3"for="ddescription"><h6>Description:</h6></label>
+                        <textarea class="marginright col-5 form-control" id="ddescription" name="description" rows="3">{{book_info.description}}</textarea>
+                    </div>
+                    <a href="/books/{{book_info.id}/edit}" class="moveit col-2 btn btn-success btn-sm">Update</a>
+                    <a href="/books/{{book_info.id}}/delete" class="col-2 btn btn-danger btn-sm danger">Delete</a>
+                </form>
+            {%else%}
+                <h6>Description: <span class="text-muted">{{book_info.description}}</span></h6>
+            {%endif%}
+        </div>
+        <div class="col container-fluid">
+            <ul>
+                <h3>User Who Like This Book:</h3>
+                {%for user in users_who_like_this%}
+                <div class="row">
+                    <li class="col-3 littlebit">{{user.first_name}} {{user.last_name}}</li>
+                </div>
+                {% endfor %}
+                {% if user_info in users_who_like_this %}
+                <br>
+                <a href="/books/{{book_info.id}}/unfavorite" class="small col-12 btn btn-danger btn-sm danger">Unfavorite</a>
+                {% else %}
+                <br>
+                <a href="/books/{{book_info.id}}/favorite" class="small col-12 btn btn-info btn-sm">Add to Favorites</a>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

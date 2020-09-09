@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login and Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css.css' %}"> 
+</head>
+<body class="container-fluid">
+    <h1>Login and Registration</h1>
+    <div class=flash">
+        {% if messages %}                            <!-- check if there are any messages -->
+            {% for message in messages %}            <!-- loop through the messages -->
+                <h6>{{message | safe}}</h6>                   <!-- display each message in a paragraph tag -->
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class='row'>
+        <div class='left col'>
+        <h3>Register here!</h3>
+            <form action="/register" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="ffname">First Name:</label>
+                    <input type="text" id="ffname" name="first_name" class="form-control" value="{{request.session.first_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="llname">Last Name:</label>
+                    <input type="text" id="llname" name="last_name" class="form-control" value={{request.session.last_name}}>
+                </div>
+                <div class="form-group">
+                        <label for="eemail">Email:</label>
+                        <input type="text" id="eemail" name="email" class="form-control" value={{request.session.email}}>
+                </div>
+                <div class="form-group">
+                    <label for="bbirthdate">Birthdate:</label>
+                    <input type="date" id="bbirthdate" name="birthdate" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="pw">Password:</label>
+                    <input type="password" id="pw" name="password" class="form-control" placeholder="Enter password">
+                </div>
+                <div class="form-group">
+                    <label for="confirmpassword">Confirm password:</label>
+                    <input type="password" id="pwconfirm" name="confirmpassword" class="form-control" placeholder="Confirm password">
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+        <div class='right col'>
+            <h5>Login here!</h5>
+            <form action="/login" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="eeemail">Email:</label>
+                    <input type="text" id="eeemail" name="email" class="form-control" placeholder="Enter valid email address">
+                </div>
+                <div class="form-group">
+                    <label for="ppword">Password</label>
+                    <input type="password" id="ppword" name="password"  placeholder="User password here" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Login!</button>
+            </form>
+        </div>
+    </div>
+</body>
+</body>
+</html>

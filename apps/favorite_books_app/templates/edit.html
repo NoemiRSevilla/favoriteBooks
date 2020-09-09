@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Show</title>
+
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css.css' %}">
+    </head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <h4 class="white mr-auto">CodingDojo Wall</h4>
+        <h6 class="white name"> Welcome, {{user_info.first_name}}!</h6>
+        <a href="/logout" class="badge badge-primary">Log out</a>
+    </nav>
+    <br>
+    <div class="row container">
+            <div class="col form-group">
+                <h1>{{book_info.title}}</h1>
+                <h6>Added by: {{book_info.uploaded_by.first_name}} {{book_info.uploaded_by.last_name}}</h6>
+                <h6>Added on: {{book_info.created_at}}</h6>
+                <h6>Last updated on: {{book_info.updated_at}}</h6>
+                <label for="description">Description: </label>
+                <input type="text" class="form-control" name="description" placeholder="{{request.session.description}}">
+                <button type="submit" class="btn btn-success">Update</button>
+                <a href="/books/{{books.id}}/delete">
+                    <img border="0" alt="delete" src="{% static 'img/delete.png' %}" width="35" height="35">
+                </a>
+
+            </div>
+            <div class="col container-fluid">
+                <h1>All Books</h1>
+                {{for book in all_books}}
+                    {{book.title}}
+                    (added by {{book.uploaded_by}})
+                {%endfor%}
+            </div>
+        </div>
+</body>
+
+</html>

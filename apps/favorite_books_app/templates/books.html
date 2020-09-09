@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Show</title>
+
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css.css' %}">
+    </head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <h4 class="white mr-auto">Welcome, {{user_info.first_name}}</h4>
+        <a href="/logout" class="move badge badge-primary">Log out</a>
+    </nav>
+    <br>
+    <form class ="row" action="/books" method="POST">
+        {% csrf_token %}
+        <div class="marginleft col-4 form-group">
+            <h1>Add a Favorite Book</h1>
+            {% if messages %}                            <!-- check if there are any messages -->
+            {% for message in messages %}            <!-- loop through the messages -->
+                <p>{{message | safe}}</p>                   <!-- display each message in a paragraph tag -->
+            {% endfor %}
+            {% endif %}
+            <div class="form-group">
+                <label for="title">Title: </label>
+                <input type="text" class="form-control" name="title" placeholder="{{request.session.title}}">
+            </div>
+            <div class="form-group">
+                <label for="ddescription">Description: </label>
+                <textarea class="form-control" id="ddescription" name="description" placeholder="{{request.session.description}}" rows="3"></textarea>
+            </div>
+            <input type="hidden" name="uploaded_by" value="{{user_info.id}}">
+            <input type="hidden" name="users_who_like" value="{{user_info.id}}">
+            <button type="submit" class="moveitright col-4 btn btn-success">Add</button>
+        </div>
+        <div class="marginleft col-5">
+            <h1>All Books</h1>
+            {%for book in all_books%}
+            <div class="godown">
+                <a href="/books/{{book.id}}"><h5>{{book.title}}</h5></a>
+                <h6>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}})</h6>
+                {% if user_info in book.users_who_like.all %}
+                <i class="text-info">this is one of your favorites</i>
+                {% else %}
+                <a href="/books/{{book.id}}/favorite" class="small col-4 btn btn-info btn-sm">Add to Favorites</a>
+                {%endif%}
+            </div>
+            {%endfor%}
+        </div>
+    </form>
+</body>
+</html>
